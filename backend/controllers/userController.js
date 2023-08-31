@@ -1,0 +1,3 @@
+const User = require('../models/user');
+// Fonctions du contrôleur pour les utilisateurs
+// ...

@@ -1,0 +1,3 @@
+const jwt = require('jsonwebtoken');
+// Middleware d'authentification
+// ...
