@@ -76,7 +76,7 @@ Les contributions sont les bienvenues ! Pour contribuer :
 
 ## Auteurs
 
-    Cherif Diouf
+Cherif Diouf
 
 ## Licence
 
