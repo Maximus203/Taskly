@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const Role = require('./role'); // Importez le modèle Role
 const bcrypt = require('bcrypt');
 
 const User = sequelize.define('User', {
@@ -46,7 +47,11 @@ const User = sequelize.define('User', {
     },
     role_id: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
+        references: {
+            model: Role,    // C'est une référence à un autre modèle (Role)
+            key: 'id'       // Ceci est le champ qui sera utilisé pour la relation
+        }
     }
 }, {
     tableName: 'users',
@@ -65,5 +70,9 @@ const User = sequelize.define('User', {
         }
     }
 });
+
+User.belongsTo(Role, { foreignKey: 'role_id' });  // Un User appartient à un Role
+Role.hasMany(User, { foreignKey: 'role_id' });   // Un Role a plusieurs Users
+
 
 module.exports = User;
