@@ -1,0 +1,23 @@
+// backend/routes/projectRoutes.js
+const express = require('express');
+const router = express.Router();
+
+const projectController = require('../controllers/projectController');
+const authMiddleware = require('../middlewares/authMiddleware');
+
+// Récupération de tous les projets
+router.get('/', authMiddleware.verifyToken, projectController.getAllProjects);
+
+// Récupération d'un projet par ID
+router.get('/:id', authMiddleware.verifyToken, projectController.getProjectById);
+
+// Création d'un nouveau projet
+router.post('/', authMiddleware.verifyToken, projectController.createProject);
+
+// Mise à jour d'un projet
+router.put('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, projectController.updateProject);
+
+// Suppression d'un projet
+router.delete('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, projectController.deleteProject);
+
+module.exports = router;

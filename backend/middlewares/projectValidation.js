@@ -1,5 +1,11 @@
+// backend/middlewares/projectValidation.js
+
 const { body, validationResult } = require('express-validator');
 const Project = require('../models/project');
+
+// Définir les valeurs possibles pour les énumérations ici
+const VALID_STATUSES = ['pending', 'in_progress', 'completed'];
+const VALID_IMPORTANCE_LEVELS = ['low', 'medium', 'high'];
 
 const createProjectRules = () => [
     body('titre')
@@ -12,11 +18,11 @@ const createProjectRules = () => [
         .withMessage('La description doit être une chaîne de caractères.'),
 
     body('status')
-        .isIn(['pending', 'in_progress', 'completed'])  // Adaptez cette liste selon vos besoins
+        .isIn(VALID_STATUSES)
         .withMessage('Le status n\'est pas valide.'),
 
     body('importance')
-        .isIn(['low', 'medium', 'high']) // Supposition de trois niveaux d'importance
+        .isIn(VALID_IMPORTANCE_LEVELS)
         .withMessage('L\'importance n\'est pas valide.'),
 
     body('image')
@@ -38,12 +44,12 @@ const updateProjectRules = () => [
 
     body('status')
         .optional()
-        .isIn(['pending', 'in_progress', 'completed'])
+        .isIn(VALID_STATUSES)
         .withMessage('Le status n\'est pas valide.'),
 
     body('importance')
         .optional()
-        .isIn(['low', 'medium', 'high'])
+        .isIn(VALID_IMPORTANCE_LEVELS)
         .withMessage('L\'importance n\'est pas valide.'),
 
     body('image')

@@ -20,13 +20,16 @@ const Project = sequelize.define('Project', {
         allowNull: true
     },
     status: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.ENUM('pending', 'in_progress', 'completed'),
+        allowNull: false,
+        defaultValue: 'pending'
     },
     importance: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.ENUM('low', 'medium', 'high'),
+        allowNull: false,
+        defaultValue: 'medium'
     }
+
 }, {
     tableName: 'projects'
 });
