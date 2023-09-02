@@ -1,5 +1,6 @@
+// backend/controllers/projectController.js
 const Project = require('../models/project');
-
+const { translateStatus, translateImportance } = require('../utils/translationHelper');
 const projectController = {};
 
 // Obtenir tous les projets
@@ -17,6 +18,9 @@ projectController.getProjectById = async (req, res) => {
     try {
         const project = await Project.findByPk(req.params.id);
         if (project) {
+            // Traduire le statut et l'importance en français pour la réponse
+            project.status = translateStatus(project.status);
+            project.importance = translateImportance(project.importance);
             res.status(200).json(project);
         } else {
             res.status(404).json({ message: "Projet non trouvé." });

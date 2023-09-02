@@ -1,3 +1,5 @@
+// backend/controllers/userController.js
+
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const { validationResult } = require('express-validator');
