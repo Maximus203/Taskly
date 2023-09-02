@@ -4,6 +4,7 @@ const router = express.Router();
 
 const projectController = require('../controllers/projectController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const projectValidation = require('../middlewares/projectValidation'); // Importation du middleware de validation
 
 // Récupération de tous les projets
 router.get('/', authMiddleware.verifyToken, projectController.getAllProjects);
@@ -12,10 +13,21 @@ router.get('/', authMiddleware.verifyToken, projectController.getAllProjects);
 router.get('/:id', authMiddleware.verifyToken, projectController.getProjectById);
 
 // Création d'un nouveau projet
-router.post('/', authMiddleware.verifyToken, projectController.createProject);
+router.post('/',
+    authMiddleware.verifyToken,
+    projectValidation.createProjectRules(),
+    projectValidation.validate,
+    projectController.createProject
+);
 
 // Mise à jour d'un projet
-router.put('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, projectController.updateProject);
+router.put('/:id',
+    authMiddleware.verifyToken,
+    authMiddleware.verifyOwnership,
+    projectValidation.updateProjectRules(),
+    projectValidation.validate,
+    projectController.updateProject
+);
 
 // Suppression d'un projet
 router.delete('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, projectController.deleteProject);

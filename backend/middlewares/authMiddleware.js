@@ -7,12 +7,12 @@ const authMiddleware = {};
 
 // Middleware pour vérifier le JWT
 authMiddleware.verifyToken = (req, res, next) => {
-    const token = req.headers['authorization'];
-
+    const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
     if (!token) return res.status(403).json({ message: 'Un token est requis.' });
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(verified)
         req.user = verified;
         next();
     } catch (err) {

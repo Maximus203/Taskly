@@ -4,6 +4,7 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const userValidation = require('../middlewares/userValidation'); // Importation du middleware de validation
 
 // Récupération de tous les utilisateurs
 router.get('/', authMiddleware.verifyToken, authMiddleware.roleAuthorized(1), userController.getAllUsers);
@@ -12,19 +13,37 @@ router.get('/', authMiddleware.verifyToken, authMiddleware.roleAuthorized(1), us
 router.get('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, userController.getUserById);
 
 // Création d'un nouvel utilisateur (laissons-le ouvert pour l'inscription)
-router.post('/', userController.createUser); // This can be left open for signups. But remember to hash passwords!
+router.post('/',
+    userValidation.createUserRules(),
+    userValidation.validate,
+    userController.createUser
+);
 
 // Mise à jour d'un utilisateur
-router.put('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, userController.updateUser);
+router.put('/:id',
+    authMiddleware.verifyToken,
+    authMiddleware.verifyOwnership,
+    userValidation.updateUserRules(),
+    userValidation.validate,
+    userController.updateUser
+);
 
 // Suppression d'un utilisateur
-router.delete('/:id', authMiddleware.verifyToken, authMiddleware.roleAuthorized(1), userController.deleteUser); // Only admin (role 1) can delete?
+router.delete('/:id', authMiddleware.verifyToken, authMiddleware.roleAuthorized(1), userController.deleteUser);
 
 // Inscription
-router.post('/signup', userController.signup); // This might not need any middleware since it's for new users
+router.post('/signup',
+    userValidation.signupRules(),
+    userValidation.validate,
+    userController.signup
+);
 
 // Connexion
-router.post('/login', userController.login); // This might not need any middleware since it's for logging in
+router.post('/login',
+    userValidation.loginRules(),
+    userValidation.validate,
+    userController.login
+);
 
 // Déconnexion
 router.post('/logout', authMiddleware.verifyToken, userController.logout);

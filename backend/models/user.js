@@ -31,11 +31,7 @@ const User = sequelize.define('User', {
     },
     mot_de_passe: {
         type: DataTypes.STRING,
-        allowNull: false,
-        set(value) {
-            const hash = bcrypt.hashSync(value, 10);
-            this.setDataValue('mot_de_passe', hash);
-        }
+        allowNull: false
     },
     refreshToken: {
         type: DataTypes.STRING,

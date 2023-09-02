@@ -3,6 +3,8 @@
 const { body, validationResult } = require('express-validator');
 const Task = require('../models/task');
 
+const VALID_STATUSES = ['pending', 'in_progress', 'completed'];
+
 const createTaskRules = () => [
     body('libelle')
         .isLength({ min: 1 })
@@ -14,7 +16,7 @@ const createTaskRules = () => [
         .withMessage('La description doit être une chaîne de caractères.'),
 
     body('status')
-        .isIn(['pending', 'in_progress', 'completed'])  // Ajustez cette liste selon les status que vous avez
+        .isIn(VALID_STATUSES)
         .withMessage('Le status n\'est pas valide.'),
 
     body('delai')
@@ -45,7 +47,7 @@ const updateTaskRules = () => [
 
     body('status')
         .optional()
-        .isIn(['pending', 'in_progress', 'completed'])
+        .isIn(VALID_STATUSES)
         .withMessage('Le status n\'est pas valide.'),
 
     body('delai')
