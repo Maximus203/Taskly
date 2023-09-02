@@ -1,3 +1,5 @@
+![01-Taskly-logo](https://github.com/Maximus203/Taskly/assets/64066992/05df4f80-52b4-4abd-9243-4e1dba9279ba)
+
 # Taskly: Gestion de Tâches
 
 Une application de gestion de tâches élégante et efficace, avec un backend Express.js et un frontend React.
