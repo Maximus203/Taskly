@@ -1,4 +1,5 @@
-![01-Taskly-logo](https://github.com/Maximus203/Taskly/assets/64066992/05df4f80-52b4-4abd-9243-4e1dba9279ba)
+![02-Taskly-logo-github](https://github.com/Maximus203/Taskly/assets/64066992/1436d91b-d7e0-4410-a4b2-cd0cc1f25c5a)
+
 
 # Taskly: Gestion de Tâches
 
