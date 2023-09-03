@@ -1,5 +1,4 @@
 // backend/middlewares/authMiddleware.js
-
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
@@ -8,15 +7,14 @@ const authMiddleware = {};
 // Middleware pour vérifier le JWT
 authMiddleware.verifyToken = (req, res, next) => {
     const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
-    if (!token) return res.status(403).json({ message: 'Un token est requis.' });
+    if (!token) return res.status(403).json({ success: false, message: 'Un token est requis.' });
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(verified)
         req.user = verified;
         next();
     } catch (err) {
-        res.status(401).json({ message: 'Token invalide.' });
+        res.status(401).json({ success: false, message: 'Token invalide.' });
     }
 };
 
@@ -28,11 +26,11 @@ authMiddleware.roleAuthorized = (role) => {
                 if (user && user.role_id === role) {
                     next();
                 } else {
-                    res.status(403).json({ message: "Accès refusé." });
+                    res.status(403).json({ success: false, message: "Accès refusé." });
                 }
             })
             .catch(err => {
-                res.status(500).json({ message: "Erreur lors de la vérification du rôle." });
+                res.status(500).json({ success: false, message: "Erreur lors de la vérification du rôle." });
             });
     };
 };
@@ -44,7 +42,7 @@ authMiddleware.verifyOwnership = (req, res, next) => {
     if (req.user.id === parseInt(userId)) {
         next();
     } else {
-        res.status(403).json({ message: "Vous n'avez pas les droits pour accéder à cette ressource." });
+        res.status(403).json({ success: false, message: "Vous n'avez pas les droits pour accéder à cette ressource." });
     }
 };
 

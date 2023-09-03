@@ -117,10 +117,11 @@ const validate = (req, res, next) => {
         return next();
     }
 
-    const extractedErrors = [];
-    errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }));
+    const extractedErrors = {};
+    errors.array().forEach(err => extractedErrors[err.param] = err.msg);
 
     return res.status(422).json({
+        success: false,
         errors: extractedErrors,
     });
 }

@@ -7,9 +7,9 @@ const projectController = {};
 projectController.getAllProjects = async (req, res) => {
     try {
         const projects = await Project.findAll();
-        res.status(200).json(projects);
+        res.status(200).json({ success: true, message: "Projets récupérés avec succès", data: projects });
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la récupération des projets." });
+        res.status(500).json({ success: false, message: "Erreur lors de la récupération des projets." });
     }
 };
 
@@ -21,12 +21,12 @@ projectController.getProjectById = async (req, res) => {
             // Traduire le statut et l'importance en français pour la réponse
             project.status = translateStatus(project.status);
             project.importance = translateImportance(project.importance);
-            res.status(200).json(project);
+            res.status(200).json({ success: true, message: "Projet récupéré avec succès", data: project });
         } else {
-            res.status(404).json({ message: "Projet non trouvé." });
+            res.status(404).json({ success: false, message: "Projet non trouvé." });
         }
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la récupération du projet." });
+        res.status(500).json({ success: false, message: "Erreur lors de la récupération du projet." });
     }
 };
 
@@ -34,9 +34,9 @@ projectController.getProjectById = async (req, res) => {
 projectController.createProject = async (req, res) => {
     try {
         const project = await Project.create(req.body);
-        res.status(201).json(project);
+        res.status(201).json({ success: true, message: "Projet créé avec succès", data: project });
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la création du projet." });
+        res.status(500).json({ success: false, message: "Erreur lors de la création du projet." });
     }
 };
 
@@ -46,12 +46,12 @@ projectController.updateProject = async (req, res) => {
         const project = await Project.findByPk(req.params.id);
         if (project) {
             await project.update(req.body);
-            res.status(200).json(project);
+            res.status(200).json({ success: true, message: "Projet mis à jour avec succès", data: project });
         } else {
-            res.status(404).json({ message: "Projet non trouvé." });
+            res.status(404).json({ success: false, message: "Projet non trouvé." });
         }
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la mise à jour du projet." });
+        res.status(500).json({ success: false, message: "Erreur lors de la mise à jour du projet." });
     }
 };
 
@@ -61,12 +61,12 @@ projectController.deleteProject = async (req, res) => {
         const project = await Project.findByPk(req.params.id);
         if (project) {
             await project.destroy();
-            res.status(200).json({ message: "Projet supprimé avec succès." });
+            res.status(200).json({ success: true, message: "Projet supprimé avec succès." });
         } else {
-            res.status(404).json({ message: "Projet non trouvé." });
+            res.status(404).json({ success: false, message: "Projet non trouvé." });
         }
     } catch (error) {
-        res.status(500).json({ message: "Erreur lors de la suppression du projet." });
+        res.status(500).json({ success: false, message: "Erreur lors de la suppression du projet." });
     }
 };
 
