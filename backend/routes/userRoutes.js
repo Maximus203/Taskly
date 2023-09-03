@@ -4,7 +4,8 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
-const userValidation = require('../middlewares/userValidation'); // Importation du middleware de validation
+const userValidation = require('../middlewares/userValidation');
+const adaptiveUpload = require('../middlewares/uploadMiddleware');
 
 // Récupération de tous les utilisateurs
 router.get('/', authMiddleware.verifyToken, authMiddleware.roleAuthorized(1), userController.getAllUsers);
@@ -15,12 +16,14 @@ router.get('/:id', authMiddleware.verifyToken, authMiddleware.verifyOwnership, u
 // Création d'un nouvel utilisateur (laissons-le ouvert pour l'inscription)
 router.post('/',
     userValidation.createUserRules(),
+    adaptiveUpload("profile"),
     userValidation.validate,
     userController.createUser
 );
 
 // Mise à jour d'un utilisateur
 router.put('/:id',
+    adaptiveUpload("profile"),
     authMiddleware.verifyToken,
     authMiddleware.verifyOwnership,
     userValidation.updateUserRules(),
@@ -33,6 +36,7 @@ router.delete('/:id', authMiddleware.verifyToken, authMiddleware.roleAuthorized(
 
 // Inscription
 router.post('/signup',
+    adaptiveUpload("profile"),
     userValidation.signupRules(),
     userValidation.validate,
     userController.signup
