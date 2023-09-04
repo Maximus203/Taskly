@@ -16,6 +16,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use('/static/uploads', express.static('./uploads'));
 
 app.get('/taskly-api', (req, res) => {
     res.status(200).json({
