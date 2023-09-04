@@ -10,7 +10,8 @@ export const useAuth = () => {
 };
 
 export const AuthContextProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState(null);
+    const initialToken = localStorage.getItem('token');
+    const [currentUser, setCurrentUser] = useState(initialToken ? { email: "unknown" } : null);
     const [token, setToken] = useState(null); // Pour stocker le token
     const [errors, setErrors] = useState({}); // Stocke les erreurs possibles
 
@@ -38,10 +39,15 @@ export const AuthContextProvider = ({ children }) => {
             return { success: false, message: "AuthContext: Une erreur s'est produite lors de la connexion." };
         }
     };
+    const logout = () => {
+        setToken(null);
+        setCurrentUser(null);
+        localStorage.removeItem('token');
+    };
 
 
     return (
-        <AuthContext.Provider value={{ currentUser, login, errors }}>
+        <AuthContext.Provider value={{ currentUser, login, logout, errors }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Row, Col, Collapse, Button } from 'react-bootstrap';
-import './styles/taskly-theme.css';
 import ExtraButtonContext from '../context/ExtraButtonContext';
 import Signup from '../components/Auth/Signup';
 import Login from '../components/Auth/Login';

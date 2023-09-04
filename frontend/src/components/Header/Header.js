@@ -11,9 +11,15 @@ function Header() {
     const { extraButton } = useContext(ExtraButtonContext);
 
     // Utiliser le contexte d'authentification pour récupérer l'utilisateur et les erreurs
-    const { currentUser, errors } = useAuth();
+    const { currentUser, errors, logout } = useAuth();
 
     const [isAuthenticated, setIsAuthenticated] = useState(!!currentUser);
+
+    // Utilisez l'effet pour mettre à jour le statut d'authentification lorsque currentUser change
+    useEffect(() => {
+        setIsAuthenticated(!!currentUser);
+    }, [currentUser]);
+
     // Utilisez l'effet pour suivre les changements dans le localStorage
     useEffect(() => {
         const checkAuth = () => {
@@ -29,19 +35,15 @@ function Header() {
     }, [currentUser]);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        // Ici, en réalité, vous devriez avoir une fonction logout dans votre contexte Auth pour vous assurer que l'utilisateur est correctement déconnecté côté backend.
-        // Puisque vous n'avez pas encore cette logique, je vais simplifier cela pour l'instant.
-        window.location.reload();
+        logout();
     };
 
     return (
         <Navbar bg="light" expand="lg">
-            <Navbar.Brand >
+            <Navbar.Brand>
                 <Link className="nav-link" to="/">
                     <Image src={`${process.env.PUBLIC_URL}/assets/images/01-Taskly-logo.png`} width="42px" />
                 </Link>
-
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
@@ -49,8 +51,8 @@ function Header() {
                     <Link className="nav-link" to="/">Accueil</Link>
                     {isAuthenticated && (
                         <>
-                            <Link className="nav-link" to="/dashboard">Projets</Link>
-                            <Link className="nav-link" to="/settings">Tâches</Link>
+                            <Link className="nav-link" to="/project-list">Projets</Link>
+                            <Link className="nav-link" to="/task-list">Tâches</Link>
                         </>
                     )}
                     <Link className="nav-link" to="/about">À propos</Link>
@@ -59,10 +61,10 @@ function Header() {
 
             <div className="d-flex">
                 {!isAuthenticated && location.pathname !== "/auth" && (
-                    <Link className="btn btn-primary me-3" to="/auth"><i class="bi bi-box-arrow-in-left"></i> Connexion</Link>
+                    <Link className="btn btn-primary me-3" to="/auth"><i className="bi bi-box-arrow-in-left"></i> Connexion</Link>
                 )}
                 {isAuthenticated && (
-                    <button className="btn btn-danger me-3" onClick={handleLogout}><i class="bi bi-box-arrow-right"></i> Déconnexion</button>
+                    <button className="btn btn-danger me-3" onClick={handleLogout}><i className="bi bi-box-arrow-right"></i> Déconnexion</button>
                 )}
                 {extraButton && (
                     <div className="ms-2">

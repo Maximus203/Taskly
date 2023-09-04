@@ -12,26 +12,3 @@
     border-color: #0582CA;
     /* Autres propriétés pour l'état hover/focus/active */
 }
-/* 
-/* Pour les liens avec la classe .text-primary 
-.text-primary {
-    color: #0582CA !important;
-    /* Utilisez !important pour vous assurer que cela surcharge la couleur par défaut de Bootstrap 
-}
-
-.text-primary:hover,
-.text-primary:focus {
-    color: #006494 !important;
-}
-
-/* Pour les fonds avec la classe .bg-primary 
-.bg-primary {
-    background-color: #0582CA !important;
-}
-
-/* Pour les bordures avec la classe .border-primary 
-.border-primary {
-    border-color: #0582CA !important;
-}
-
-Autres éléments ... */

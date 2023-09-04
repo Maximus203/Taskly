@@ -1,7 +1,7 @@
 import React from 'react';
 
-function CreateProject() {
+function ProjectForm() {
     return <div>Créer un nouveau projet</div>;
 }
 
-export default CreateProject;
+export default ProjectForm;

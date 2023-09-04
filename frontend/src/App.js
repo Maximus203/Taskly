@@ -1,6 +1,8 @@
 import React, { Suspense, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
+import { Container, Spinner } from 'react-bootstrap';
+import './views/styles/taskly-theme.css';
+import './App.css';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -10,30 +12,38 @@ import Login from './components/Auth/Login';
 import AuthContextProvider from './context/AuthContext';
 import ExtraButtonContext from './context/ExtraButtonContext';
 
-const HomePage = React.lazy(() => import('./views/HomePage'));
+const HomePage = React.lazy(() =>
+  new Promise(resolve =>
+    setTimeout(() => resolve(import('./views/HomePage')), 300)
+  )
+);
+const ProjectsPage = React.lazy(() => import('./views/ProjectsPage'));
 const AuthView = React.lazy(() => import('./views/AuthView'));
 
 function App() {
   const [extraButton, setExtraButton] = useState(null);
   return (
     <AuthContextProvider>
-      <ExtraButtonContext.Provider value={{ extraButton, setExtraButton }}>
-        <Container fluid>
-          <Router>
+      <Container fluid>
+        <Router>
+          <ExtraButtonContext.Provider value={{ extraButton, setExtraButton }}>
             <Header />
-            <Suspense fallback={<div>Chargement...</div>}>
+            <Suspense fallback={
+              <div className="d-flex justify-content-center margin-top-10">
+                <Spinner animation="border" variant="primary" role="status">
+                </Spinner>
+                <span className="ms-3 sr-only">Chargement...</span>
+              </div>}>
               <Routes>
-                {/** Routes commentées pour les projets, les tâches et les utilisateurs... */}
-                <Route path="/auth" element={<AuthView />}>
-                  <Route index element={<Login />} />
-                </Route>
+                <Route path="/project-list" element={<ProjectsPage />} />
+                <Route path="/auth" element={<AuthView />} />
                 <Route path="/" element={<HomePage />} />
               </Routes>
             </Suspense>
             <Footer />
-          </Router>
-        </Container>
-      </ExtraButtonContext.Provider>
+          </ExtraButtonContext.Provider>
+        </Router>
+      </Container>
     </AuthContextProvider>
   );
 }
