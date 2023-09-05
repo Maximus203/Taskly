@@ -1,24 +1,47 @@
 const multer = require('multer');
+const fsExtra = require('fs-extra');
 const path = require('path');
 
 const diskStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
+    destination: async function (req, file, cb) {
         let destinationPath = "./uploads/"; // chemin par défaut
+        let id = null;
+        if (req.user && req.user.userId) {
+            id = req.user.userId.toString();
+            if (req.uploadType === "profile") {
+                destinationPath = path.join(destinationPath, "profiles", id);
+            } else if (req.uploadType === "project") {
+                destinationPath = path.join(destinationPath, "projects", id);
+            }
+        }
 
-        if (req.uploadType === "profile") {
-            destinationPath = path.join(destinationPath, "profiles", req.user.id.toString());
-        } else if (req.uploadType === "project") {
-            destinationPath = path.join(destinationPath, "projects", req.project.id.toString());
+
+        if (!id) {
+            // Si aucun ID n'est défini, nous levons une erreur.
+            cb(new Error('L’ID de l’utilisateur ou du projet est indéfini.'));
+            return;
+        }
+        // S'assurer que le dossier existe (le créer s'il n'existe pas)
+        try {
+            await fsExtra.ensureDir(destinationPath);
+            cb(null, destinationPath);
+        } catch (err) {
+            cb(new Error('Erreur lors de la création du dossier de destination.'));
         }
 
         cb(null, destinationPath);
     },
     filename: function (req, file, cb) {
+        if (!req.user || !req.user.userId) {
+            cb(new Error('L’ID de l’utilisateur est indéfini.'));
+            return;
+        }
         const timestamp = Date.now();
         const fileExtension = path.extname(file.originalname);
-        cb(null, `${req.user.id}_${timestamp}${fileExtension}`);
+        cb(null, `${req.user.userId}_${timestamp}${fileExtension}`);
     }
 });
+
 
 // Définir les limites et le filtrage de fichiers
 const uploadLimits = {
@@ -64,6 +87,13 @@ const adaptiveUpload = (type) => {
                     message: error.message
                 });
             }
+
+            // Si le fichier a été correctement téléchargé, ajoutez son chemin au corps de la requête.
+            if (req.file) {
+                const fullPath = path.join(req.file.destination, req.file.filename);
+                req.body.image = fullPath;
+            }
+
             next();
         });
     };
