@@ -1,5 +1,3 @@
-// services/api.js
-
 import axios from 'axios';
 
 const api = axios.create({
@@ -17,5 +15,21 @@ api.interceptors.request.use((config) => {
 }, (error) => {
     return Promise.reject(error);
 });
+
+const apiInterceptors = (setShouldReloadHeader) => {
+    api.interceptors.response.use(
+        response => {
+            return response;
+        },
+        error => {
+            if (error.response.status === 401) {
+                setShouldReloadHeader(true);
+            }
+            return Promise.reject(error);
+        }
+    );
+};
+
+export { api, apiInterceptors };
 
 export default api;

@@ -1,0 +1,25 @@
+.masonry-grid {
+    /* ... autres styles existants pour .masonry-grid */
+}
+
+.masonry-item {
+    margin: 2px;
+    width: 18.95%;
+}
+
+/* Breakpoint pour les tailles entre md (577px) et sm (768px) */
+@media (min-width: 577px) and (max-width: 768px) {
+    .masonry-item {
+        width: calc(50% - 4px)!important;
+        /* Soustraction de 4px pour ajuster la marge */
+        margin: 2px !important;
+    }
+}
+
+/* Breakpoint pour les tailles sm et inférieures (<= 576px) */
+@media (max-width: 576px) {
+    .masonry-item {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+}

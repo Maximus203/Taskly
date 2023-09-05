@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Spinner, Row, Col, Alert } from 'react-bootstrap';
 import ProjectItem from './ProjectItem';
 import api from '../../services/api';
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
+import './ProjectList.css';
 
-function ProjectList() {
+
+function ProjectList({ forceUpdate }) {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const masonryGridRef = useRef(null);
 
     useEffect(() => {
         api.get('/projects')
@@ -18,7 +23,22 @@ function ProjectList() {
                 setError(error.message);
                 setLoading(false);
             });
-    }, []);
+    }, [forceUpdate]);
+
+    useEffect(() => {
+        if (projects.length > 0 && masonryGridRef.current) {
+            const grid = masonryGridRef.current;
+
+            // Initialiser Masonry après que toutes les images soient chargées
+            imagesLoaded(grid, function () {
+                new Masonry(grid, {
+                    itemSelector: '.masonry-item',
+                    columnWidth: '.masonry-item',
+                    percentPosition: true
+                });
+            });
+        }
+    }, [projects]);
 
     if (loading) {
         return (
@@ -35,18 +55,18 @@ function ProjectList() {
 
     return (
         <>
-            <Row className="mb-4">
+            <Row className="mb-4 w-100 mx-auto text-start">
                 <Col>
-                    <h2>Liste des Projets</h2>
+                    <h2 className="fw-semibold">Liste des Projets</h2>
                 </Col>
             </Row>
-            <Row>
+            <div ref={masonryGridRef} className="masonry-grid w-100 mx-auto">
                 {projects.map(project => (
-                    <Col md={4} key={project.id}>
+                    <div className="masonry-item m-2" style={{ width: '18.95%' }} key={project.id}>
                         <ProjectItem project={project} />
-                    </Col>
+                    </div>
                 ))}
-            </Row>
+            </div>
         </>
     );
 }

@@ -1,5 +1,5 @@
-import React, { Suspense, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { Suspense, useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import { Container, Spinner } from 'react-bootstrap';
 import './views/styles/taskly-theme.css';
 import './App.css';
@@ -12,6 +12,8 @@ import Login from './components/Auth/Login';
 import AuthContextProvider from './context/AuthContext';
 import ExtraButtonContext from './context/ExtraButtonContext';
 
+import { apiInterceptors } from './services/api';
+
 const HomePage = React.lazy(() =>
   new Promise(resolve =>
     setTimeout(() => resolve(import('./views/HomePage')), 300)
@@ -22,6 +24,7 @@ const AuthView = React.lazy(() => import('./views/AuthView'));
 
 function App() {
   const [extraButton, setExtraButton] = useState(null);
+
   return (
     <AuthContextProvider>
       <Container fluid>
@@ -47,6 +50,5 @@ function App() {
     </AuthContextProvider>
   );
 }
-
 
 export default App;

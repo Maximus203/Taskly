@@ -37,7 +37,6 @@ function Header() {
     const handleLogout = () => {
         logout();
     };
-
     return (
         <Navbar bg="light" expand="lg">
             <Navbar.Brand>
@@ -45,35 +44,45 @@ function Header() {
                     <Image src={`${process.env.PUBLIC_URL}/assets/images/01-Taskly-logo.png`} width="42px" />
                 </Link>
             </Navbar.Brand>
+
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="mr-auto">
-                    <Link className="nav-link" to="/">Accueil</Link>
+            <Navbar.Collapse id="basic-navbar-nav" className="justify-content-center ms-5">
+                <Nav className="mx-auto">
+                    <Link className="nav-link me-3" to="/">Accueil</Link>
                     {isAuthenticated && (
                         <>
-                            <Link className="nav-link" to="/project-list">Projets</Link>
-                            <Link className="nav-link" to="/task-list">Tâches</Link>
+                            <Link className="nav-link me-3" to="/project-list">Projets</Link>
+                            <Link className="nav-link me-3" to="/task-list">Tâches</Link>
                         </>
                     )}
-                    <Link className="nav-link" to="/about">À propos</Link>
+                    <Link className="nav-link me-3" to="/about">À propos</Link>
                 </Nav>
+
+                <div className="d-flex">
+                    {!isAuthenticated && location.pathname !== "/auth" && (
+                        <Link className="btn btn-primary me-3" to="/auth">
+                            <i className="bi bi-box-arrow-in-left"></i>
+                            <span className="d-xm-none d-sm-none d-lg-inline">Connexion</span>
+                        </Link>
+                    )}
+                    {isAuthenticated && (
+                        <button className="btn btn-danger me-3" onClick={handleLogout}>
+                            <i className="bi bi-box-arrow-right"></i>
+                            <span className="d-xm-none d-sm-none d-lg-inline"> Déconnexion</span>
+                        </button>
+                    )}
+                    {extraButton && (
+                        <div className="ms-2">
+                            {extraButton}
+                        </div>
+                    )}
+                </div>
             </Navbar.Collapse>
 
-            <div className="d-flex">
-                {!isAuthenticated && location.pathname !== "/auth" && (
-                    <Link className="btn btn-primary me-3" to="/auth"><i className="bi bi-box-arrow-in-left"></i> Connexion</Link>
-                )}
-                {isAuthenticated && (
-                    <button className="btn btn-danger me-3" onClick={handleLogout}><i className="bi bi-box-arrow-right"></i> Déconnexion</button>
-                )}
-                {extraButton && (
-                    <div className="ms-2">
-                        {extraButton}
-                    </div>
-                )}
-            </div>
         </Navbar>
     );
+
+
 }
 
 export default Header;
