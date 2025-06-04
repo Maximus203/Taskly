@@ -21,7 +21,7 @@ authMiddleware.verifyToken = (req, res, next) => {
 // Middleware pour vérifier le rôle de l'utilisateur
 authMiddleware.roleAuthorized = (role) => {
     return (req, res, next) => {
-        User.findByPk(req.user.id)
+        User.findByPk(req.user.userId)
             .then(user => {
                 if (user && user.role_id === role) {
                     next();
@@ -39,7 +39,7 @@ authMiddleware.roleAuthorized = (role) => {
 authMiddleware.verifyOwnership = (req, res, next) => {
     const userId = req.params.id;
 
-    if (req.user.id === parseInt(userId)) {
+    if (req.user.userId === parseInt(userId)) {
         next();
     } else {
         res.status(403).json({ success: false, message: "Vous n'avez pas les droits pour accéder à cette ressource." });
