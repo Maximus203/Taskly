@@ -10,7 +10,7 @@ Une application de gestion de tâches élégante et efficace, avec un backend Ex
 - [Installation](#installation)
 - [Utilisation](#utilisation)
 - [Configuration](#configuration)
-- [Fonctionnalités](#fonctionnalités)
+- [Fonctionnalités](#fonctionnalites-a-implementer)
 - [Contributions](#contributions)
 - [Auteurs](#auteurs)
 - [Licence](#licence)
@@ -61,12 +61,26 @@ Visitez `http://localhost:3000` dans votre navigateur pour accéder à l'interfa
 ## Configuration
 
 Assurez-vous de créer un fichier `.env` à la racine de backend et frontend pour définir toutes les variables d'environnement nécessaires.
-Fonctionnalités
 
-- Gestion des utilisateurs (inscription, connexion).
-- Création et suivi des tâches.
-- Gestion des projets.
-- Attribution des rôles.
+## Fonctionnalités à implémenter
+
+### Backend
+
+- Authentification via JWT : inscription, connexion, déconnexion et réinitialisation du mot de passe.
+- Gestion complète des utilisateurs (création, lecture, mise à jour et suppression) avec assignation de rôles.
+- Gestion des tâches (CRUD) avec suivi de statut et assignation aux utilisateurs.
+- Gestion des projets (CRUD) permettant d'organiser les tâches par projet.
+- Téléversement de fichiers et d'avatars via `multer`.
+- Validation des données avec `express-validator`.
+- Gestion centralisée des erreurs et réponses uniformes au format `{ status: true, message: "Création réussi", error: [] }`.
+- Utilisation de design patterns (services, repositories et middlewares) pour structurer le code et faciliter les évolutions.
+- Refactorisation globale du backend pour séparer la logique métier et faciliter la maintenance.
+- Mise en place de tests automatisés avec Jest et Supertest.
+
+### Frontend
+
+- Interfaces React pour la gestion des utilisateurs, des projets et des tâches.
+- Consommation des API du backend et affichage des retours au format précédent.
 
 ## Contributions
 

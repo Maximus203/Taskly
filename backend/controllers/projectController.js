@@ -1,72 +1,67 @@
 // backend/controllers/projectController.js
-const Project = require('../models/project');
-const { translateStatus, translateImportance } = require('../utils/translationHelper');
+const ProjectService = require('../services/projectService');
 const projectController = {};
 
 // Obtenir tous les projets
 projectController.getAllProjects = async (req, res) => {
     try {
-        const projects = await Project.findAll();
-        res.status(200).json({ success: true, message: "Projets récupérés avec succès", data: projects });
+        const projects = await ProjectService.getAll();
+        res.success("Projets récupérés avec succès", projects);
     } catch (error) {
-        res.status(500).json({ success: false, message: "Erreur lors de la récupération des projets." });
+        res.fail("Erreur lors de la récupération des projets.", [], 500);
     }
 };
 
 // Obtenir un projet par ID
 projectController.getProjectById = async (req, res) => {
     try {
-        const project = await Project.findByPk(req.params.id);
+        const project = await ProjectService.getById(req.params.id);
         if (project) {
-            // Traduire le statut et l'importance en français pour la réponse
-            project.status = translateStatus(project.status);
-            project.importance = translateImportance(project.importance);
-            res.status(200).json({ success: true, message: "Projet récupéré avec succès", data: project });
+            res.success("Projet récupéré avec succès", project);
         } else {
-            res.status(404).json({ success: false, message: "Projet non trouvé." });
+            res.fail("Projet non trouvé.", [], 404);
         }
     } catch (error) {
-        res.status(500).json({ success: false, message: "Erreur lors de la récupération du projet." });
+        res.fail("Erreur lors de la récupération du projet.", [], 500);
     }
 };
 
 // Créer un nouveau projet
 projectController.createProject = async (req, res) => {
     try {
-        const project = await Project.create(req.body);
-        res.status(201).json({ success: true, message: "Projet créé avec succès", data: project });
+        const project = await ProjectService.create(req.body);
+        res.status(201);
+        res.success("Projet créé avec succès", project);
     } catch (error) {
-        res.status(500).json({ success: false, message: "Erreur lors de la création du projet." });
+        res.fail("Erreur lors de la création du projet.", [], 500);
     }
 };
 
 // Mettre à jour un projet
 projectController.updateProject = async (req, res) => {
     try {
-        const project = await Project.findByPk(req.params.id);
+        const project = await ProjectService.update(req.params.id, req.body);
         if (project) {
-            await project.update(req.body);
-            res.status(200).json({ success: true, message: "Projet mis à jour avec succès", data: project });
+            res.success("Projet mis à jour avec succès", project);
         } else {
-            res.status(404).json({ success: false, message: "Projet non trouvé." });
+            res.fail("Projet non trouvé.", [], 404);
         }
     } catch (error) {
-        res.status(500).json({ success: false, message: "Erreur lors de la mise à jour du projet." });
+        res.fail("Erreur lors de la mise à jour du projet.", [], 500);
     }
 };
 
 // Supprimer un projet
 projectController.deleteProject = async (req, res) => {
     try {
-        const project = await Project.findByPk(req.params.id);
+        const project = await ProjectService.remove(req.params.id);
         if (project) {
-            await project.destroy();
-            res.status(200).json({ success: true, message: "Projet supprimé avec succès." });
+            res.success("Projet supprimé avec succès.");
         } else {
-            res.status(404).json({ success: false, message: "Projet non trouvé." });
+            res.fail("Projet non trouvé.", [], 404);
         }
     } catch (error) {
-        res.status(500).json({ success: false, message: "Erreur lors de la suppression du projet." });
+        res.fail("Erreur lors de la suppression du projet.", [], 500);
     }
 };
 
