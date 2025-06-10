@@ -8,7 +8,7 @@ const taskController = {};
 taskController.getAllTasks = async (req, res) => {
     try {
         const tasks = await TaskService.getAll();
-        res.success("Tâches récupérées avec succès", tasks);
+        res.status(200).json({ success: true, message: "Tâches récupérées avec succès", data: tasks });
     } catch (error) {
         res.fail("Erreur lors de la récupération des tâches.", [], 500);
     }
@@ -32,8 +32,7 @@ taskController.getTaskById = async (req, res) => {
 taskController.createTask = async (req, res) => {
     try {
         const task = await TaskService.create(req.body);
-        res.status(201);
-        res.success("Tâche créée avec succès", task);
+        res.status(201).json({ success: true, message: "Tâche créée avec succès", data: task });
     } catch (error) {
         res.fail("Erreur lors de la création de la tâche.", [], 500);
     }
@@ -44,7 +43,7 @@ taskController.updateTask = async (req, res) => {
     try {
         const task = await TaskService.update(req.params.id, req.body);
         if (task) {
-            res.success("Tâche mise à jour avec succès", task);
+            res.status(200).json({ success: true, message: "Tâche mise à jour avec succès", data: task });
         } else {
             res.fail("Tâche non trouvée.", [], 404);
         }
@@ -58,7 +57,7 @@ taskController.deleteTask = async (req, res) => {
     try {
         const task = await TaskService.remove(req.params.id);
         if (task) {
-            res.success("Tâche supprimée avec succès.");
+            res.status(200).json({ success: true, message: "Tâche supprimée avec succès." });
         } else {
             res.fail("Tâche non trouvée.", [], 404);
         }

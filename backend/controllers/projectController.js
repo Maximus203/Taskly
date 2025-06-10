@@ -6,8 +6,7 @@ const projectController = {};
 projectController.getAllProjects = async (req, res) => {
     try {
         const projects = await ProjectService.getAll();
-        res.success("Projets récupérés avec succès", projects);
-
+        res.status(200).json({ success: true, message: "Projets récupérés avec succès", data: projects });
     } catch (error) {
         res.fail("Erreur lors de la récupération des projets.", [], 500);
     }
@@ -18,7 +17,7 @@ projectController.getProjectById = async (req, res) => {
     try {
         const project = await ProjectService.getById(req.params.id);
         if (project) {
-            res.success("Projet récupéré avec succès", project);
+            res.status(200).json({ success: true, message: "Projet récupéré avec succès", data: project });
         } else {
             res.fail("Projet non trouvé.", [], 404);
         }
@@ -31,8 +30,7 @@ projectController.getProjectById = async (req, res) => {
 projectController.createProject = async (req, res) => {
     try {
         const project = await ProjectService.create(req.body);
-        res.status(201);
-        res.success("Projet créé avec succès", project);
+        res.status(201).json({ success: true, message: "Projet créé avec succès", data: project });
     } catch (error) {
         res.fail("Erreur lors de la création du projet.", [], 500);
     }
@@ -43,7 +41,7 @@ projectController.updateProject = async (req, res) => {
     try {
         const project = await ProjectService.update(req.params.id, req.body);
         if (project) {
-            res.success("Projet mis à jour avec succès", project);
+            res.status(200).json({ success: true, message: "Projet mis à jour avec succès", data: project });
         } else {
             res.fail("Projet non trouvé.", [], 404);
         }
@@ -57,8 +55,7 @@ projectController.deleteProject = async (req, res) => {
     try {
         const project = await ProjectService.remove(req.params.id);
         if (project) {
-            res.success("Projet supprimé avec succès.");
-
+            res.status(200).json({ success: true, message: "Projet supprimé avec succès." });
         } else {
             res.fail("Projet non trouvé.", [], 404);
         }

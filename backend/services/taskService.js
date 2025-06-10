@@ -1,25 +1,30 @@
-const TaskRepository = require('../repositories/taskRepository');
+const Task = require('../models/task');
 
 const TaskService = {
     async getAll() {
-        return await TaskRepository.findAll();
+        return await Task.findAll();
     },
 
     async getById(id) {
-        return await TaskRepository.findById(id);
+        return await Task.findByPk(id);
     },
 
     async create(data) {
-        return await TaskRepository.create(data);
+        return await Task.create(data);
     },
 
     async update(id, data) {
-        return await TaskRepository.update(id, data);
+        const task = await Task.findByPk(id);
+        if (!task) return null;
+        await task.update(data);
+        return task;
     },
 
     async remove(id) {
-        return await TaskRepository.delete(id);
-
+        const task = await Task.findByPk(id);
+        if (!task) return null;
+        await task.destroy();
+        return task;
     }
 };
 
