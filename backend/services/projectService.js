@@ -1,13 +1,14 @@
-const Project = require('../models/project');
+const ProjectRepository = require('../repositories/projectRepository');
+
 const { translateStatus, translateImportance } = require('../utils/translationHelper');
 
 const ProjectService = {
     async getAll() {
-        return await Project.findAll();
+        return await ProjectRepository.findAll();
     },
 
     async getById(id) {
-        const project = await Project.findByPk(id);
+        const project = await ProjectRepository.findById(id);
         if (project) {
             project.status = translateStatus(project.status);
             project.importance = translateImportance(project.importance);
@@ -16,21 +17,15 @@ const ProjectService = {
     },
 
     async create(data) {
-        return await Project.create(data);
+        return await ProjectRepository.create(data);
     },
 
     async update(id, data) {
-        const project = await Project.findByPk(id);
-        if (!project) return null;
-        await project.update(data);
-        return project;
+        return await ProjectRepository.update(id, data);
     },
 
     async remove(id) {
-        const project = await Project.findByPk(id);
-        if (!project) return null;
-        await project.destroy();
-        return project;
+        return await ProjectRepository.delete(id);
     }
 };
 

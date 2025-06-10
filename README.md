@@ -73,7 +73,7 @@ Assurez-vous de créer un fichier `.env` à la racine de backend et frontend pou
 - Téléversement de fichiers et d'avatars via `multer`.
 - Validation des données avec `express-validator`.
 - Gestion centralisée des erreurs et réponses uniformes au format `{ status: true, message: "Création réussi", error: [] }`.
-- Utilisation de design patterns (services, repositories, middlewares) pour structurer le code.
+- Utilisation de design patterns (services, repositories et middlewares) pour structurer le code et faciliter les évolutions.
 - Refactorisation globale du backend pour séparer la logique métier et faciliter la maintenance.
 - Mise en place de tests automatisés avec Jest et Supertest.
 

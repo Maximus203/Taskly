@@ -1,43 +1,37 @@
-const User = require('../models/user');
+const UserRepository = require('../repositories/userRepository');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const UserService = {
     async getAll() {
-        return await User.findAll();
+        return await UserRepository.findAll();
     },
 
     async getById(id) {
-        return await User.findByPk(id);
+        return await UserRepository.findById(id);
     },
 
     async create(data) {
-        return await User.create(data);
+        return await UserRepository.create(data);
     },
 
     async update(id, data) {
-        const user = await User.findByPk(id);
-        if (!user) return null;
-        await user.update(data);
-        return user;
+        return await UserRepository.update(id, data);
     },
 
     async remove(id) {
-        const user = await User.findByPk(id);
-        if (!user) return null;
-        await user.destroy();
-        return user;
+        return await UserRepository.delete(id);
     },
 
     async signup(data) {
         data.role_id = 2;
-        const user = await User.create(data);
+        const user = await UserRepository.create(data);
         const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return { user, token };
     },
 
     async login(credentials) {
-        const user = await User.findOne({ where: { email: credentials.email } });
+        const user = await UserRepository.findByEmail(credentials.email);
         if (user && bcrypt.compareSync(credentials.mot_de_passe, user.mot_de_passe)) {
             const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
             return { token };
