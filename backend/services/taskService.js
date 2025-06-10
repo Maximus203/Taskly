@@ -19,6 +19,7 @@ const TaskService = {
 
     async remove(id) {
         return await TaskRepository.delete(id);
+
     }
 };
 

@@ -7,6 +7,7 @@ projectController.getAllProjects = async (req, res) => {
     try {
         const projects = await ProjectService.getAll();
         res.success("Projets récupérés avec succès", projects);
+
     } catch (error) {
         res.fail("Erreur lors de la récupération des projets.", [], 500);
     }
@@ -57,6 +58,7 @@ projectController.deleteProject = async (req, res) => {
         const project = await ProjectService.remove(req.params.id);
         if (project) {
             res.success("Projet supprimé avec succès.");
+
         } else {
             res.fail("Projet non trouvé.", [], 404);
         }
