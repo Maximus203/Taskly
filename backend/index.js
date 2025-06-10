@@ -9,6 +9,7 @@ const Role = require('./models/role');
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const projectRoutes = require('./routes/projectRoutes');
+const responseFormatter = require('./middlewares/responseFormatter');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(responseFormatter);
 app.use('/static/uploads', express.static('./uploads'));
 
 app.get('/taskly-api', (req, res) => {
