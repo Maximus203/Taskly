@@ -66,13 +66,16 @@ Assurez-vous de créer un fichier `.env` à la racine de backend et frontend pou
 
 ### Backend
 
-- Gestion des utilisateurs : inscription, connexion, mise à jour et suppression.
-- Gestion des tâches : création, suivi, mise à jour et suppression.
-- Gestion des projets : création, modification et assignation des tâches.
-- Attribution des rôles pour sécuriser les accès.
-- Réponses uniformes au format `{ status: true, message: "Création réussi", error: [] }`.
-- Mise en place de design patterns (services, repositories…) pour structurer le code.
-- Refactorisation générale du backend pour améliorer la maintenabilité.
+- Authentification via JWT : inscription, connexion, déconnexion et réinitialisation du mot de passe.
+- Gestion complète des utilisateurs (création, lecture, mise à jour et suppression) avec assignation de rôles.
+- Gestion des tâches (CRUD) avec suivi de statut et assignation aux utilisateurs.
+- Gestion des projets (CRUD) permettant d'organiser les tâches par projet.
+- Téléversement de fichiers et d'avatars via `multer`.
+- Validation des données avec `express-validator`.
+- Gestion centralisée des erreurs et réponses uniformes au format `{ status: true, message: "Création réussi", error: [] }`.
+- Utilisation de design patterns (services, repositories, middlewares) pour structurer le code.
+- Refactorisation globale du backend pour séparer la logique métier et faciliter la maintenance.
+- Mise en place de tests automatisés avec Jest et Supertest.
 
 ### Frontend
 
