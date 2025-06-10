@@ -1,15 +1,13 @@
 // backend/controllers/userController.js
 
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const UserService = require('../services/userService');
 
 const userController = {};
 
 
 userController.getAllUsers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const users = await UserService.getAll();
         res.status(200).json({ success: true, message: "Utilisateurs récupérés avec succès", data: users });
     } catch (error) {
         res.status(500).json({ success: false, message: "Erreur lors de la récupération des utilisateurs." });
@@ -18,7 +16,7 @@ userController.getAllUsers = async (req, res) => {
 
 userController.getUserById = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id);
+        const user = await UserService.getById(req.params.id);
         if (user) {
             res.status(200).json({ success: true, message: "Utilisateur récupéré avec succès", data: user });
         } else {
@@ -31,7 +29,7 @@ userController.getUserById = async (req, res) => {
 
 userController.createUser = async (req, res) => {
     try {
-        const user = await User.create(req.body);
+        const user = await UserService.create(req.body);
         res.status(201).json({ success: true, message: "Utilisateur créé avec succès", data: user });
     } catch (error) {
         res.status(500).json({ success: false, message: "Erreur lors de la création de l'utilisateur." });
@@ -40,9 +38,8 @@ userController.createUser = async (req, res) => {
 
 userController.updateUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id);
+        const user = await UserService.update(req.params.id, req.body);
         if (user) {
-            await user.update(req.body);
             res.status(200).json({ success: true, message: "Utilisateur mis à jour avec succès", data: user });
         } else {
             res.status(404).json({ success: false, message: "Utilisateur non trouvé." });
@@ -54,9 +51,8 @@ userController.updateUser = async (req, res) => {
 
 userController.deleteUser = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id);
+        const user = await UserService.remove(req.params.id);
         if (user) {
-            await user.destroy();
             res.status(200).json({ success: true, message: "Utilisateur supprimé avec succès." });
         } else {
             res.status(404).json({ success: false, message: "Utilisateur non trouvé." });
@@ -68,9 +64,7 @@ userController.deleteUser = async (req, res) => {
 
 userController.signup = async (req, res) => {
     try {
-        req.body.role_id = 2;
-        const user = await User.create(req.body);
-        const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const { user, token } = await UserService.signup(req.body);
         res.status(201).json({ success: true, message: "Inscription réussie!", data: { token, user } });
     } catch (error) {
         res.status(500).json({ success: false, message: "Erreur lors de l'inscription." });
@@ -79,10 +73,9 @@ userController.signup = async (req, res) => {
 
 userController.login = async (req, res) => {
     try {
-        const user = await User.findOne({ where: { email: req.body.email } });
-        if (user && bcrypt.compareSync(req.body.mot_de_passe, user.mot_de_passe)) {
-            const token = jwt.sign({ userId: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.status(200).json({ success: true, message: "Connexion réussie!", data: { token } });
+        const result = await UserService.login(req.body);
+        if (result) {
+            res.status(200).json({ success: true, message: "Connexion réussie!", data: result });
         } else {
             res.status(401).json({ success: false, message: "Email ou mot de passe incorrect." });
         }
