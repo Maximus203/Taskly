@@ -10,7 +10,7 @@ Une application de gestion de tâches élégante et efficace, avec un backend Ex
 - [Installation](#installation)
 - [Utilisation](#utilisation)
 - [Configuration](#configuration)
-- [Fonctionnalités](#fonctionnalités)
+- [Fonctionnalités](#fonctionnalites-a-implementer)
 - [Contributions](#contributions)
 - [Auteurs](#auteurs)
 - [Licence](#licence)
@@ -61,12 +61,23 @@ Visitez `http://localhost:3000` dans votre navigateur pour accéder à l'interfa
 ## Configuration
 
 Assurez-vous de créer un fichier `.env` à la racine de backend et frontend pour définir toutes les variables d'environnement nécessaires.
-Fonctionnalités
 
-- Gestion des utilisateurs (inscription, connexion).
-- Création et suivi des tâches.
-- Gestion des projets.
-- Attribution des rôles.
+## Fonctionnalités à implémenter
+
+### Backend
+
+- Gestion des utilisateurs : inscription, connexion, mise à jour et suppression.
+- Gestion des tâches : création, suivi, mise à jour et suppression.
+- Gestion des projets : création, modification et assignation des tâches.
+- Attribution des rôles pour sécuriser les accès.
+- Réponses uniformes au format `{ status: true, message: "Création réussi", error: [] }`.
+- Mise en place de design patterns (services, repositories…) pour structurer le code.
+- Refactorisation générale du backend pour améliorer la maintenabilité.
+
+### Frontend
+
+- Interfaces React pour la gestion des utilisateurs, des projets et des tâches.
+- Consommation des API du backend et affichage des retours au format précédent.
 
 ## Contributions
 
