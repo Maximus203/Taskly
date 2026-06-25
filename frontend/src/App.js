@@ -20,6 +20,8 @@ const HomePage = React.lazy(() =>
   )
 );
 const ProjectsPage = React.lazy(() => import('./views/ProjectsPage'));
+const TasksPage = React.lazy(() => import('./views/TasksPage'));
+const UsersPage = React.lazy(() => import('./views/UsersPage'));
 const AuthView = React.lazy(() => import('./views/AuthView'));
 
 function App() {
@@ -39,6 +41,8 @@ function App() {
               </div>}>
               <Routes>
                 <Route path="/project-list" element={<ProjectsPage />} />
+                <Route path="/task-list" element={<TasksPage />} />
+                <Route path="/user-list" element={<UsersPage />} />
                 <Route path="/auth" element={<AuthView />} />
                 <Route path="/" element={<HomePage />} />
               </Routes>

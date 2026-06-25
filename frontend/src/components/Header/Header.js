@@ -53,6 +53,7 @@ function Header() {
                         <>
                             <Link className="nav-link me-3" to="/project-list">Projets</Link>
                             <Link className="nav-link me-3" to="/task-list">Tâches</Link>
+                            <Link className="nav-link me-3" to="/user-list">Utilisateurs</Link>
                         </>
                     )}
                     <Link className="nav-link me-3" to="/about">À propos</Link>
